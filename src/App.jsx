@@ -13,16 +13,17 @@ function App() {
 	// console.log(page);
 	const [query, setQuery] = useState('random');
 	const photoAPIdata = usePhotos(query, page);
-	console.log(photoAPIdata);
+	// console.log(photoAPIdata);
 	const { gallery, loading, err, maxPages } = photoAPIdata;
+	console.log(maxPages, page);
 	const lastImageRef = useRef(null);
 
-	console.dir(photoAPIdata);
+	// console.dir(photoAPIdata);
 
 	useEffect(() => {
-		console.log(lastImageRef.current);
+		// console.log(lastImageRef.current);
 		const observer = new IntersectionObserver(([entry]) => {
-			if (entry.isIntersecting && page <= maxPages) {
+			if (entry.isIntersecting && page < maxPages) {
 				setPage(page + 1);
 				lastImageRef.current = null;
 				observer.disconnect();
@@ -33,8 +34,8 @@ function App() {
 		lastImageRef.current && observer.observe(lastImageRef.current);
 	}, [photoAPIdata]);
 
-	console.log('app render');
-	console.log(loading);
+	// console.log('app render');
+	// console.log(loading);
 
 	return (
 		<div className="min-h-screen bg-gray-100 px-5 pt-20 pb-5">
@@ -42,38 +43,36 @@ function App() {
 				<InfoApp />
 				<SearchBar setQuery={setQuery} setPage={setPage} />
 				{/* No error but no result */}
-				{!err && gallery.length && !loading === 0 && (
+				{!err && gallery.length === 0 && !loading && (
 					<Error errMsg="No images found" />
 				)}
 				{/* Error but there are not data */}
 				{err && gallery.length === 0 && <Error errMsg={err} />}
 
-				{!loading && (
-					<Gallery setPage={setPage}>
-						{gallery.length > 0 &&
-							gallery.map((image, index) => {
-								if (gallery.length === index + 1) {
-									return (
-										<Image
-											key={image.id}
-											image={image}
-											ref={lastImageRef}
-										/>
-									);
-								} else {
-									return (
-										<Image key={image.id} image={image} />
-									);
-								}
-							})}
-					</Gallery>
-				)}
+				<Gallery>
+					{gallery.length > 0 &&
+						gallery.map((image, index) => {
+							if (gallery.length === index + 1) {
+								return (
+									<Image
+										key={image.id}
+										image={image}
+										ref={lastImageRef}
+									/>
+								);
+							} else {
+								return <Image key={image.id} image={image} />;
+							}
+						})}
+				</Gallery>
 
 				{loading && <Loading />}
+
 				{/* Error but there are data */}
 				{err && gallery.length > 0 && <Error errMsg={err} />}
+
 				{/* if we reach the end of the scroll */}
-				{!loading && maxPages > 0 && gallery.length > 0 && (
+				{page === maxPages && (
 					<Error errMsg="No more images , try new search" />
 				)}
 			</div>
@@ -81,4 +80,4 @@ function App() {
 	);
 }
 
-export default App;
+export default React.memo(App);

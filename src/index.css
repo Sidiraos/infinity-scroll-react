@@ -2,3 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Sélecteur pour la barre de défilement principale */
+::-webkit-scrollbar {
+    width: 4px; /* Largeur de la barre de défilement */
+  }
+  
+  /* Sélecteur pour la poignée de la barre de défilement */
+  ::-webkit-scrollbar-thumb {
+    background-color: #555; /* Couleur de la poignée */
+    border-radius: 2px; /* Bord arrondi de la poignée */
+  }
+  
+  /* Sélecteur pour la piste (fond) de la barre de défilement */
+  ::-webkit-scrollbar-track {
+    background-color: #eee; /* Couleur de la piste */
+  }
+  
+

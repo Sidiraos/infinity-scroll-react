@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 const SearchBar = ({ setQuery, setPage }) => {
-	console.log('search bar render');
+	// console.log('search bar render');
 	const inputRef = useRef();
 	const handleSubmit = (e) => {
 		e.preventDefault();

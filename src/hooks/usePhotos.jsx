@@ -10,14 +10,14 @@ const usePhotos = (query, page) => {
 		if (gallery.length > 0 && maxPages > 0) {
 			setGallery([]);
 			setMaxPages(0);
+			setLoading(true);
 		}
 	}, [query]);
 
 	useEffect(() => {
 		const API_KEY = import.meta.env.VITE_API_KEY;
-		let url = `https://api.unsplash.com/search/photos?client_id=${API_KEY};page=${page}&per_page=30&query=${query}`;
-
-		fetch(url)
+		setLoading(true);
+		fetch(`https://api.unsplash.com/search/photos?client_id=${API_KEY};page=${page}&per_page=30&query=${query}`)
 			.then((res) => {
 				if (res.ok) {
 					return res.json();
